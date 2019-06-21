@@ -1,7 +1,12 @@
 # doMe
 No-frills Task Management Telegram Bot
 
-To run, execute
-.. code:: shell
+Step 1: Load Telegram API Token
+-
+Open run.py and edit line below.
 
-    $ pip install python-telegram-bot==12.0.0b1 --upgrade
+    api_token = 'insert_your_api_token_here'
+
+Step 2: Run the Python script
+-
+    $ python run.py
