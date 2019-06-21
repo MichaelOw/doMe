@@ -10,3 +10,8 @@ Open run.py and edit line below.
 Step 2: Run the Python script
 -
     $ python run.py
+
+Step 3: Start recording your tasks!
+-
+
+![alt text](demo.png)
