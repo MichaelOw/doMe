@@ -14,12 +14,12 @@ from chrono import Chrono
 from command import Command
 from telegram.error import NetworkError, Unauthorized
 
-api_token = 'insert_your_api_token_here'
+api_token = '284365055:AAG3-pV7nSdh9rmaP4SzwJ_AMgJjv54N4j8'
 
 #########
 # SETUP #
 #########
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s [%(module)s]: %(message)s')
+logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s [%(module)s]: %(message)s')
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.FileHandler('log.log', 'w', 'utf-8'))
 
@@ -50,12 +50,12 @@ COMMAND_LIST_PASS = ['LIST', 'START', 'LIST_FULL', 'LIST_RECUR', 'HELP']
 
 def main():
     global update_id
-    logger.info('(1/3) Loading bot...')
+    logger.warning('(1/3) Loading bot...')
     bot = get_bot(api_token)
     update_id = get_update_id(bot)
-    logger.info('(2/3) Loading database...')
+    logger.warning('(2/3) Loading database...')
     db_init()
-    logger.info('(3/3) Bot ready.')
+    logger.warning('(3/3) Bot ready.')
     #send('Recipebot has been activated.', 302383988, bot)
     while True:
         try:
@@ -172,7 +172,7 @@ def db_get_tasklist(id):
 
 def db_get_recurring_tasklist(id):
     tasklist = []
-    c.execute('SELECT * FROM tasks_recurring WHERE id = (?) ORDER BY recurringString', (id,))
+    c.execute('SELECT * FROM tasks_recurring WHERE id = (?) ORDER BY recurringString, substr(date,5,2)||recurringInteger', (id,))
     for row in c.fetchall():
         tasklist.append(Task(name = row[1], date = row[2], time = row[3], location = row[4], linkList = json.loads(row[5]), important = row[6], new = row[7], recurringString = row[8], recurringInteger = row[9]))
     return tasklist
@@ -204,7 +204,7 @@ def db_delete_task(number_or_task, id):
 
 def db_delete_task_recurring(number, id):
     db_undo_clear(id)
-    c.execute('SELECT * FROM tasks_recurring WHERE id = (?) ORDER BY recurringString', (id,))
+    c.execute('SELECT * FROM tasks_recurring WHERE id = (?) ORDER BY recurringString, substr(date,5,2)||recurringInteger', (id,))
     try: task_tuple = c.fetchall()[number - 1]
     except IndexError: raise Exception(INVALID_COMMAND_INDEX.format(number))
     c.execute('DELETE FROM tasks_recurring WHERE rowid = (SELECT rowid FROM tasks_recurring WHERE (id, name, date, time, location, linkListSerial, important, new, recurringString, recurringInteger) = (?,?,?,?,?,?,?,?,?,?) LIMIT 1)', task_tuple)
@@ -541,28 +541,40 @@ welcome_message_string = """Welcome to DoMe Task Manager!
 <i>Just type in a command! (No "/" needed.)</i>
 
 <b>1) Adding Tasks</b> [Optional Arguments]
-    e.g. <i>Go swimming at pool tmr 8am</i>
-    <b>Syntax:</b> Task_Name [date][time][location][link][!]
-    <b>Acceptable Formats</b> (not case-sensitive)
-    Date: <i>17apr, 17 apr, 17 april, 17 april 2003</i>
-    Time: <i>7pm, 745pm, 11am</i>
-    Location: <i>at ang mo kio, @ang_mo_kio</i>
-    Link: <i>http..., www...</i>
+eg. <i>Go swimming at pool tmr 8am</i>
+<b>Syntax:</b> Task_Name [date][time][location][link][!]
+<b>Acceptable Formats</b> (not case-sensitive)
+Date: <i>17apr, 17 apr, 17 april, 17 april 2003</i>
+Time: <i>7pm, 745pm, 11am</i>
+Location: <i>at ang mo kio, @ang_mo_kio</i>
+Link: <i>http..., www...</i>
+
 <b>2) Deleting Tasks</b>
-    eg. delete 10 / d 10 / d10
-    eg. d 3 1 6 2
+eg. delete 10 / d 10 / d10
+eg. d 3 1 6 2
+
 <b>3) Refresh Current Tasks</b>
-    eg.  refresh / ref / list / ls
+eg.  refresh / ref / list / ls
+
 <b>4) Edit Tasks</b>
-    eg. edit 3 <i>something new</i>
-    eg. e 12 <i>19 feb</i>
-    eg. e 15 <i>something new 19 feb</i>
+eg. edit 3 <i>something new</i>
+eg. e 12 <i>19 feb</i>
+eg. e 15 <i>something new 19 feb</i>
+
 <b>5) Append</b>
-    eg. append 5 more_info at location2
-    eg. app 5 more_info at LOC_2
-        <b>Result:</b> Task, <i>more_info @LOC_1/LOC_2</i>
+eg. append 5 more_info at location2
+eg. app 5 more_info at LOC_2
+    <b>Result:</b> Task, <i>more_info @LOC_1/LOC_2</i>
+
 <b>6) Change Timezone</b>
-    eg. mytime 1125pm 25may"""
+eg. mytime 1125pm 25may
+
+<b>7) Search</b>
+eg. s things to buy
+
+<b>8) Undo</b> (Only 1 undo supported)
+eg. undo, u
+"""
 
 empty_tasklist_string = """- List is empty! -
 
