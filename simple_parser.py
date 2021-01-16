@@ -178,8 +178,8 @@ def findCommandType(wordList):
         return 'ADD_RECUR', numberList
 
     elif firstWord[:5] in DEL_RECUR:
-        if firstWord[5].isdigit():
-            numberList.append(int(firstWord[5]))
+        if firstWord[5:].isdigit():
+            numberList.append(int(firstWord[5:]))
             return 'DEL_RECUR', numberList
 
     return 'ADD', numberList

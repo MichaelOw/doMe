@@ -43,6 +43,6 @@ def timeString(time):
     if hours == 12: meridiem = 'pm'
     if hours == 0: hours += 12
     if minutes == 0: return str(hours) + meridiem
-    return str(hours) + ':' + str(minutes) + meridiem
+    return str(hours) + ':' + str(minutes).rjust(2,'0') + meridiem
 
 
