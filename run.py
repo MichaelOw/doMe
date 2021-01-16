@@ -8,13 +8,15 @@ import logging
 import datetime
 import telegram
 from time import sleep
-from command import Task
-from simple_parser import Parser
-from chrono import Chrono
-from command import Command
+from src.chrono import Chrono
+from src.command import Task
+from src.command import Command
+from src.utils import get_api_token
+from src.simple_parser import Parser
 from telegram.error import NetworkError, Unauthorized
 
-api_token = '284365055:AAG3-pV7nSdh9rmaP4SzwJ_AMgJjv54N4j8'
+api_token = ''
+if not api_token: api_token = get_api_token()
 
 #########
 # SETUP #

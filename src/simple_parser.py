@@ -1,8 +1,8 @@
 import sys
 import logging
-from command import Task
-from chrono import Chrono
-from command import Command
+from src.command import Task
+from src.chrono import Chrono
+from src.command import Command
 
 chrono = Chrono()
 logger = logging.getLogger(__name__)
