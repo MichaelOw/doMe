@@ -302,7 +302,7 @@ def findDate(wordList, UTCDiffInSeconds):
             diffFromToday = pronounList[word.lower()]
             del wordList[realIndex]
             return chrono.getDateNumberNDaysFromToday(diffFromToday, UTCDiffInSeconds), ''
-    return 0, 'every_month'
+    return chrono.getDateNumberNDaysFromToday(0, UTCDiffInSeconds), 'every_month'
 
 def asteriskBugThrow(text):
     if oddNumberAsterisks(text) or oddNumberUnderscore(text):
