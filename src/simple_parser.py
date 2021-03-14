@@ -65,7 +65,7 @@ class Parser:
         linkList = findLink(wordList)
         logger.info('linkList:'+ str(linkList))
 
-        date, recurringString = findDate(wordList, UTCDiffInSeconds)
+        date, recurringString = findDate(wordList, UTCDiffInSeconds, commandType)
         recurringInteger = 0
         if len(numberList):
             recurringInteger = numberList[0]
@@ -242,7 +242,7 @@ def findTime(wordList):
             return hours * 100 + minutes
     return -1
 
-def findDate(wordList, UTCDiffInSeconds):
+def findDate(wordList, UTCDiffInSeconds, commandType):
     length = len(wordList)
     year_specified = 0
     recurringString = ''
@@ -302,7 +302,9 @@ def findDate(wordList, UTCDiffInSeconds):
             diffFromToday = pronounList[word.lower()]
             del wordList[realIndex]
             return chrono.getDateNumberNDaysFromToday(diffFromToday, UTCDiffInSeconds), ''
-    return chrono.getDateNumberNDaysFromToday(0, UTCDiffInSeconds), 'every_month'
+    if commandType == 'ADD':
+        chrono.getDateNumberNDaysFromToday(0, UTCDiffInSeconds), 'every_month'
+    return 0, 'every_month'
 
 def asteriskBugThrow(text):
     if oddNumberAsterisks(text) or oddNumberUnderscore(text):

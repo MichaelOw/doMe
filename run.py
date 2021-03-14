@@ -458,7 +458,7 @@ def task_match(task, search_task):
     task_name = ' {}'.format(task_name)
     search_text = ' {}'.format(search_text)
     if task_name.find(search_text) == -1: return 0
-    #if search_task.date and not task.date == search_task.date: return 0
+    if search_task.date and not task.date == search_task.date: return 0
     return 1
 
 def reverse_order(message):
