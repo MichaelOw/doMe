@@ -303,7 +303,7 @@ def findDate(wordList, UTCDiffInSeconds, commandType):
             del wordList[realIndex]
             return chrono.getDateNumberNDaysFromToday(diffFromToday, UTCDiffInSeconds), ''
     if commandType == 'ADD':
-        chrono.getDateNumberNDaysFromToday(0, UTCDiffInSeconds), 'every_month'
+        return chrono.getDateNumberNDaysFromToday(0, UTCDiffInSeconds), 'every_month'
     return 0, 'every_month'
 
 def asteriskBugThrow(text):
